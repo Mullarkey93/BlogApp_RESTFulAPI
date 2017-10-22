@@ -33,6 +33,7 @@ app.get("/", function (req, res) {
     res.redirect("/blogs");
 });
 
+//Index Route
 app.get("/blogs", function (req, res) {
     Blog.find({}, function (err, blogs) {
         if(err){
@@ -42,3 +43,31 @@ app.get("/blogs", function (req, res) {
         }
     })
 });
+
+//New Route
+app.get("/blogs/new", function (req, res) {
+    res.render("new");
+});
+
+//Create Route
+app.post("/blogs", function (req, res) {
+
+    Blog.create(req.body.blog, function (err, newBlog) {
+        if(err){
+            res.render("new")
+        }else{
+            res.redirect("/blogs");
+        }
+    })
+});
+
+//Show Route
+app.get("/blogs/:id", function (req, res) {
+    Blog.findById(req.params.id, function (err, foundBlog) {
+        if(err){
+            res.redirect("/blogs")
+        }else{
+            res.render("show", {blog: foundBlog});
+        }
+    })
+})
